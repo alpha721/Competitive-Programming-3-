@@ -4,6 +4,21 @@
 
 using namespace std;
 
+int max_nodes;
+
+int binary_search(int node,int balls)
+{
+	int left = node*2;
+	int right = node* 2 + 1;
+	if( left < max_nodes && right < max_nodes)
+	{
+		if( balls%2 == 0)
+			binary_search(right,balls/2);
+		else binary_search(left, balls/2 + 1);
+	}
+	else return node;
+}
+
 int main()
 {
 	int test ;
@@ -15,37 +30,9 @@ int main()
 		if( d == -1)
 			break;
 		cin >> k;
-		int n = pow(2,d);
-		
-		vector<bool> v;
-		v.assign(n,false);
-
-		int ans = 0;
-		for(int i = 0; i < k; i++)
-		{
-			int root = 1;
-			int left = 2*root;
-			int right = 2*root + 1;
-			int t = 0;
-			while(t < d)
-			{
-				if( v[root-1] == false)
-				{
-					v[root-1] = true;
-					root = left;
-				}
-				else
-				{
-					v[root-1] = false;
-					root = right;
-				}
-				left = 2*root;
-				right = 2*root + 1;
-				t++;
-			}
-			ans = root;
-		}
-		cout << ans/2 << endl;
+		max_nodes = pow(2,d);
+		int ans = binary_search(1,k);
+		cout << ans << endl;
 	}
 	return 0;
 }

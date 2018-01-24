@@ -1,80 +1,57 @@
 #include<iostream>
 #include<vector>
-#include<sstream>
+#include<string>
+#include<map>
 
-using namespace std;
-
-void recurse(
 int main()
 {
-	while(1)
+	int test = 0;
+	while(true)
 	{
+		test++;
+
+		// read input
+
 		string line;
 		getline(cin,line);
+
 		if( cin.eof())
 			break;
-		stringstream ss;
 
-		ss(line);
-		map<char,int> mp;
-		map<char,int>::iterator it;
+		stringstream ss(line);
+		vector<char> variables;
 
-		int n = 0; 
-		while(1)
+		char c;
+		while( ss >> c)
 		{
-			char c;
-			ss >> c;
-			if( ss.eof())
-				break;
-			mp.insert(make_pair(c,n));
-			n++;
+			variables.push_back(c);
 		}
 
-		n = mp.size();
+		sort(variables.begin(),variables.end());
 
-		vector< vector<int> >g;
-		g.assign(n , vector<int>());
+		map<char,int> mp;
+		vector< vector<int> > g;
+		for(int i = 0; i < variables.size(); i++)
+		{
+			mp.insert(make_pair(variables[i],i));
+		}
+
+		int n = variables.size();
+
+		g.assign(n, vector<int>());
 
 		getline(cin,line);
-		stringstream ssi;
+		stringstream ss2(line);
+
+		char a,b;
 		while(1)
 		{
-			char x,y;
-			ssi >> x >> y;
-			if( ssi.eof())
+			ss2 >> a >> b;
+			if( ss2.eof())
 				break;
-			int a = mp[x];
-			int b = mp[y];
-			
-			g[a].push_back(b);
-		}
-		
-		vector<int> indegree;
-
-		set<int> free;
-
-		for(int i = 0; i< n; i++)
-			indegree.push_back(0);
-
-		for(int i = 0; i < n; i++)
-		{
-			for(int j= 0; j < g[i].size(); j++)
-				indegree[g[i][j]]++;
+			int x = mp[a];
+			int y = mp[b];
+			g[x].push_back(y);
 		}
 
-		for(int i = 0; i < n; i++)
-			if( indegree[i] == 0)
-				free.insert(i);
-
-		vector<int> result;
-		recurse(free,indegree,g,result);
-	}
-	return 0;
-}
-
-
-
-
-
-		
 
